@@ -2,6 +2,8 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const session = require("express-session");
+const cors = require("cors");
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -22,7 +24,22 @@ app
 .use(logger('dev'))
 .use(express.json())
 .use(express.urlencoded({ extended: false }))
+.use(cors({
+  origin: true,
+  credentials: true
+}))
 .use(cookieParser())
+.use(
+  session({
+    key: "loginData",
+    secret: "testSecret",
+    resave: false,
+    saveUninitiallized: false,
+    cookie: {
+      expires: 60 * 60 * 24,
+    }
+  })
+)
 .use(express.static(path.join(__dirname, 'public')));
 
 app
