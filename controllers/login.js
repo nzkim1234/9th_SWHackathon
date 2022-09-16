@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 module.exports = {
     loginForm: async (req, res, next) => {
         console.log(req.body)
-        db.query('SELECT * FROM user WHERE id=?', req.body.id, (err, row) => {
+        db.query('SELECT * FROM member_table WHERE id=?', req.body.id, (err, row) => {
             if(err) {
                 console.log(err)
                 return res.status(400).end();
