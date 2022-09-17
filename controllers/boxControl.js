@@ -12,7 +12,7 @@ module.exports = {
             if (row.length > 0) {
                 const ownerId = row[0].id;
                 console.log(ownerId);
-                db.query('UPDATE box_table SET boxNum = ?, boxEmpty = ?, boxPwd = ?, boxAptNum = ?, ownerName = ?, updatedDate = CURRENT_TIMESTAMP WHERE boxNum = ?', [boxNum, 1, 1234, boxAptNum, ownerId, boxNum], (err, row) =>{
+                db.query('UPDATE box_table SET boxNum = ?, boxEmpty = ?, boxPwd = ?, boxAptNum = ?, ownerName = ?, updatedDate = NOW() WHERE boxNum = ?', [boxNum, 1, 1234, boxAptNum, ownerId, boxNum], (err, row) =>{
                     if (err) return res.status(400).end();
 
                     if (row) {

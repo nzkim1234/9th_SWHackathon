@@ -13,6 +13,7 @@ module.exports = {
 
                     if (row.length > 0) {
                         console.log(JSON.stringify(row));
+                        console.log(row[0].updatedDate)
                         return res.status(200).json(row);
                     }
                     else return res.status(400).end();
