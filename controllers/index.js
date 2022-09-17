@@ -13,7 +13,7 @@ module.exports = {
 
                     if (row.length > 0) {
                         console.log(JSON.stringify(row));
-                        return res.status(200).send(JSON.stringify(row));
+                        return res.status(200).json(row);
                     }
                     else return res.status(400).end();
                 });
