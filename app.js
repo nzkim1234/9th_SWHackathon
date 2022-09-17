@@ -10,6 +10,7 @@ const loginRouter = require('./routes/login');
 const qrformRouter = require('./routes/qrform');
 const openBoxRouter = require('./routes/openBox');
 const boxControlRouter = require('./routes/boxControl');
+const qrImageControlRouter = require('./routes/showQr');
 const app = express();
 const db = require('./config/config')
 require('dotenv').config();
@@ -33,6 +34,7 @@ app
 .use('/login', loginRouter)
 .use('/openbox', openBoxRouter)
 .use('/boxcontrol', boxControlRouter)
+.use('/qrimage', qrImageControlRouter)
 .use('/qrinfo', qrformRouter);
 
 

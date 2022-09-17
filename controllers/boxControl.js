@@ -6,19 +6,20 @@ const fs = require('fs');
 module.exports = {
     postInfoFromBox : async (req, res, next) => {
         const [boxNum, boxAptNum] = [req.body.boxNum, req.body.aptNum];
-        db.query('SELECT name FROM member_table WHERE aptNum=?', boxAptNum, (err, row) => {
+        db.query('SELECT id FROM member_table WHERE aptNum=?', boxAptNum, (err, row) => {
             if (err) return res.status(400).end();
 
             if (row.length > 0) {
-                const boxName = row[0].name;
-                db.query('UPDATE box_table SET boxNum = ?, boxEmpty = ?, boxPwd = ?, boxAptNum = ?, ownerName = ?, updatedDate = CURRENT_TIMESTAMP WHERE boxNum = ?', [boxNum, 1, 1234, boxAptNum, boxName, boxNum], (err, row) =>{
+                const ownerId = row[0].id;
+                console.log(ownerId);
+                db.query('UPDATE box_table SET boxNum = ?, boxEmpty = ?, boxPwd = ?, boxAptNum = ?, ownerName = ?, updatedDate = CURRENT_TIMESTAMP WHERE boxNum = ?', [boxNum, 1, 1234, boxAptNum, ownerId, boxNum], (err, row) =>{
                     if (err) return res.status(400).end();
 
                     if (row) {
                         const qrData = {
                             "boxNum" : boxNum,
                             "aptNum" : boxAptNum,
-                            "ownerName" : boxName
+                            "ownerId" : ownerId
                         };
                         qrcode.toFile(`${path.resolve(__dirname, "../public/images/")}/${boxNum}.png`, JSON.stringify(qrData), (err) => {
                             if (err) return res.status(400).end();
@@ -39,8 +40,9 @@ module.exports = {
     },
 
     postQrInfoFromBox : async (req, res, next) => {
-        const [boxName, boxNum, boxAptNum] = [req.body.ownerName, req.body.boxNum, req.body.aptNum];
+        const [ownerId, boxNum, boxAptNum] = [req.body.ownerId, req.body.boxNum, req.body.aptNum];
         const fileExist = (fs.existsSync(`${path.resolve(__dirname, "../public/images/")}/${boxNum}.png`));
+        
         if (fileExist){
             fs.rmSync(`${path.resolve(__dirname, "../public/images/")}/${boxNum}.png`);
             db.query('UPDATE box_table SET boxNum = ?, boxEmpty = ?, boxPwd = ?, boxAptNum = ?, ownerName = ?, updatedDate = ? WHERE boxNum = ?', [boxNum, 0, null, null, null, null, boxNum], (err, row) =>{

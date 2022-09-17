@@ -12,6 +12,7 @@ module.exports = {
 
             if(row.length > 0){
                 sendInfo = {
+                    'seq' : row[0].seq,
                     'id' : row[0].id,
                     'name' : row[0].name,
                     'phoneNumber' : row[0].phoneNumber,
