@@ -10,11 +10,10 @@ module.exports = {
         const fileExist = (fs.existsSync(`${path.resolve(__dirname, "../public/images/")}/${boxNum}.png`));
         if (fileExist){
             const image = fs.readFileSync(`${path.resolve(__dirname, "../public/images/")}/${boxNum}.png`);
-            return res.status(200).write(image);    
+            return res.status(200).send(image);    
         }
         else {
-            const image = fs.readFileSync(`${path.resolve(__dirname, "../public/images/")}/null.png`);
-            return res.status(200).write(image);
+            return res.status(400).end();
         }
     }
 }

@@ -5,14 +5,14 @@ const fs = require('fs');
 
 module.exports = {
     postInfoFromBox : async (req, res, next) => {
-        const [boxNum, boxAptNum] = [req.body.boxNum, req.body.aptNum];
+        const [boxNum, boxAptNum, boxStatus] = [req.body.boxNum, req.body.aptNum, req.body.boxStatus];
         db.query('SELECT id FROM member_table WHERE aptNum=?', boxAptNum, (err, row) => {
             if (err) return res.status(400).end();
 
             if (row.length > 0) {
                 const ownerId = row[0].id;
-                console.log(ownerId);
-                db.query('UPDATE box_table SET boxNum = ?, boxEmpty = ?, boxPwd = ?, boxAptNum = ?, ownerName = ?, updatedDate = NOW() WHERE boxNum = ?', [boxNum, 1, 1234, boxAptNum, ownerId, boxNum], (err, row) =>{
+                console.log(boxStatus);
+                db.query('UPDATE box_table SET boxNum = ?, boxEmpty = ?, boxPwd = ?, boxAptNum = ?, ownerName = ?, updatedDate = NOW() WHERE boxNum = ?', [boxNum, boxStatus, 1234, boxAptNum, ownerId, boxNum], (err, row) =>{
                     if (err) return res.status(400).end();
 
                     if (row) {
